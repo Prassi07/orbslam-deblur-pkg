@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="config_file" default="$(find deblur_pkg)/config/config.yaml"/>
+    <arg name="vocabulary_file" default="$(find ORB_SLAM2)/../../../Vocabulary/ORBvoc.txt"/>
+    <arg name="settings_file" default="$(find ORB_SLAM2)/settings/spot.yaml"/>
+
+    <node pkg="deblur_pkg" type="image_deblur.py" name="deblur_node" output="screen">
+    <rosparam command="load" file="$(arg config_file)"  />
+    </node>
+
+    <node pkg="ORB_SLAM2" type="Mono" name="Mono" output="screen" args="$(arg vocabulary_file) $(arg settings_file)">
+    </node>
+
+</launch>
