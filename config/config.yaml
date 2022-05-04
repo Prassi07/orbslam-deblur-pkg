@@ -1,12 +1,12 @@
 ---
 # Topic Names
 
-crop_bottom: false
+crop_bottom: true
 ros_rate: 30
-debug: false
+debug: true
 image_out_topic: "/camera/image_raw"
 image_in_topic: "/cmu_sp1/camera_1/image_raw"
 #image_in_topic: "/camera/image_original"
 
-deblur_thresh: 700
+deblur_thresh: 500
 
