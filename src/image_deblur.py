@@ -23,6 +23,7 @@ class Deblur_node(object):
 
         self.crop_bottom = rospy.get_param('~crop_bottom')
         self.debug = rospy.get_param('~debug')
+        self.deblur = rospy.get_param('~deblur')
         # Subscribers
         rospy.Subscriber("/camera/image_original",Image,self.callback, queue_size=20)
 
@@ -42,29 +43,35 @@ class Deblur_node(object):
         value = self.variance_of_laplacian()
         if(self.debug):
             print(value)
-        if (value < self.deblur_thresh):
-            # rospy.loginfo("Blueeeeeeeeeeeerrrrrrrrrrrrrrr")
-            kernel = np.array([[-1, -1, -1],
-                   [-1, 9,-1],
-                   [-1, -1, -1]])
-            start_point = (0,240)
-            end_point = (480,320)
-            color = (0,0,0)
-            thickness = -1
+        if(self.deblur):
+            if (value < self.deblur_thresh):
+                # rospy.loginfo("Blueeeeeeeeeeeerrrrrrrrrrrrrrr")
+                kernel = np.array([[-1, -1, -1],
+                       [-1, 9,-1],
+                       [-1, -1, -1]])
+                start_point = (0,240)
+                end_point = (480,320)
+                color = (0,0,0)
+                thickness = -1
 
-            if(self.crop_bottom):
-                self.image = cv2.rectangle(self.image, start_point, end_point, color, thickness)
-            self.image = cv2.GaussianBlur(self.image,(3,3),4)
+                if(self.crop_bottom):
+                    self.image = cv2.rectangle(self.image, start_point, end_point, color, thickness)
+                self.image = cv2.GaussianBlur(self.image,(3,3),4)
 
-            self.new_image = cv2.filter2D(src=self.image, ddepth=-1, kernel=kernel)
+                self.new_image = cv2.filter2D(src=self.image, ddepth=-1, kernel=kernel)
+            else:
+                start_point = (0,240)
+                end_point = (480,320)
+                color = (0,0,0)
+                thickness = -1
+                if(self.crop_bottom):
+                    self.new_image = cv2.rectangle(self.image, start_point, end_point, color, thickness)
         else:
             start_point = (0,240)
             end_point = (480,320)
             color = (0,0,0)
             thickness = -1
-            if(self.crop_bottom):
-                self.new_image = cv2.rectangle(self.image, start_point, end_point, color, thickness)
-            
+            self.new_image = cv2.rectangle(self.image, start_point, end_point, color, thickness)
 
 
     def start(self):

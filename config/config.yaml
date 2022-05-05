@@ -7,6 +7,6 @@ debug: true
 image_out_topic: "/camera/image_raw"
 image_in_topic: "/cmu_sp1/camera_1/image_raw"
 #image_in_topic: "/camera/image_original"
-
+deblur: true
 deblur_thresh: 500
 
