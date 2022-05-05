@@ -25,10 +25,10 @@ class Deblur_node(object):
         self.debug = rospy.get_param('~debug')
         self.deblur = rospy.get_param('~deblur')
         # Subscribers
-        rospy.Subscriber("/camera/image_original",Image,self.callback, queue_size=20)
+        rospy.Subscriber(self.image_in_topic,Image,self.callback, queue_size=20)
 
         # Publishers
-        self.pub = rospy.Publisher('/camera/image_raw', Image,queue_size=20)
+        self.pub = rospy.Publisher(self.image_out_topic, Image,queue_size=20)
 
     def variance_of_laplacian(self):
 	# compute the Laplacian of the image and then return the focus
